@@ -16,3 +16,6 @@ next-env.d.ts
 # uploaded to Supabase, so it is kept out of the repo. Keep a local/Drive copy —
 # it is the only input `npm run media:prepare` needs if media ever has to be rebuilt.
 /Website creation request/
+.vercel
+.env*
+!.env.example
