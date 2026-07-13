@@ -1,0 +1,41 @@
+/* Base rules shared by every page in the source .dc.html files. */
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection {
+  background: #ffd9b8;
+  color: #1a1410;
+}
+
+/* ===== SiteNav (from SiteNav.dc.html <helmet>) ===== */
+.osd-burger {
+  display: none;
+}
+.osd-cta {
+  transition: transform 0.2s;
+}
+.osd-cta:hover {
+  transform: translateY(-1px);
+}
+@media (max-width: 1080px) {
+  .osd-navwrap .osd-navlinks {
+    display: none !important;
+  }
+  .osd-burger {
+    display: flex !important;
+  }
+}
+@media (min-width: 1081px) {
+  .osd-drawer {
+    display: none !important;
+  }
+}
