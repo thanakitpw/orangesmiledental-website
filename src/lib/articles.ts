@@ -40,11 +40,12 @@ export interface Post {
   authorName: string;
   authorCredentials: string | null;
   /**
-   * Null until a dentist has actually read the piece and signed it off. The licence
-   * is optional — what makes the claim honest is a real named dentist who read it,
-   * not the number beside their name — but a name and a review date are not.
+   * Null until the piece has actually been read and signed off. `kind` decides which
+   * claim the page makes: a named dentist, or the clinic's dental team. The licence
+   * is optional and belongs to a person — what makes the claim honest is that someone
+   * really read it, not the number beside their name — but the name and date are not.
    */
-  reviewer: { name: string; license: string | null; at: string } | null;
+  reviewer: { name: string; kind: 'person' | 'organization'; license: string | null; at: string } | null;
   medicallyReviewed: boolean;
   th: ArticleBody;
   en: ArticleBody;
@@ -78,6 +79,7 @@ type Row = {
   author_name: string;
   author_credentials: string | null;
   reviewer_name: string | null;
+  reviewer_type: 'person' | 'organization';
   reviewer_license: string | null;
   reviewed_at: string | null;
   medically_reviewed: boolean;
@@ -95,7 +97,7 @@ type Row = {
 };
 
 const SELECT = `slug, category, cover_key, featured, published_at,
-  author_name, author_credentials, reviewer_name, reviewer_license, reviewed_at, medically_reviewed,
+  author_name, author_credentials, reviewer_name, reviewer_type, reviewer_license, reviewed_at, medically_reviewed,
   article_translations ( locale, title, excerpt, body_md, meta_title, meta_description, keywords, faq, reading_minutes )`;
 
 function shape(row: Row): Post | null {
@@ -130,7 +132,12 @@ function shape(row: Row): Post | null {
     authorCredentials: row.author_credentials,
     reviewer:
       row.reviewer_name && row.reviewed_at
-        ? { name: row.reviewer_name, license: row.reviewer_license, at: row.reviewed_at }
+        ? {
+            name: row.reviewer_name,
+            kind: row.reviewer_type,
+            license: row.reviewer_license,
+            at: row.reviewed_at,
+          }
         : null,
     medicallyReviewed: row.medically_reviewed,
     th,

@@ -277,8 +277,9 @@ export function ArticlesIndex({ posts }: { posts: Post[] }) {
                   marginTop: 22,
                 }}
               >
-                {/* The design put a dentist's face and title here. No dentist has written
-                    or reviewed these pieces yet, so the byline is the clinic itself. */}
+                {/* The design put an individual dentist's face and title here. These pieces
+                    are written by the clinic's team and signed off by it, not by one named
+                    dentist, so the byline is the clinic — logo and all. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={mediaUrl('assets/media/image4.webp')}
@@ -293,11 +294,11 @@ export function ArticlesIndex({ posts }: { posts: Post[] }) {
                 />
                 <div>
                   <div style={{ fontSize: 13.5, fontWeight: 700, color: '#1A1410' }}>
-                    {featured.authorName}
+                    {t(`ทีมงาน ${featured.authorName}`, `The ${featured.authorName} team`)}
                   </div>
                   <div style={{ fontSize: 12, color: 'rgba(61,53,46,.55)' }}>
                     {featured.medicallyReviewed
-                      ? t('ตรวจทานโดยทันตแพทย์', 'Reviewed by a dentist')
+                      ? t('ตรวจทานโดยทีมทันตแพทย์', 'Reviewed by our dental team')
                       : t('ข้อมูลทั่วไป ไม่ใช่การวินิจฉัย', 'General information, not a diagnosis')}
                   </div>
                 </div>

@@ -27,7 +27,9 @@ if (!DIR || !url || !key) {
 
 const db = createClient(url, key, { auth: { persistSession: false } });
 
-const AUTHOR = 'ทีมงาน Orange Smile Dental';
+// Just the clinic name. The pages wrap it in the locale's own wording ("ทีมงาน …" /
+// "The … team"), so a Thai sentence fragment does not end up on the English page.
+const AUTHOR = 'Orange Smile Dental';
 
 /** Language-neutral facts about each piece. Order here is the order on the page. */
 const META = {

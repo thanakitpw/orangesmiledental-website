@@ -47,7 +47,22 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
   // The licence is shown when the clinic gave us one, and simply omitted when they
   // did not. Never invent one: a Thai dental licence is publicly checkable against
   // the Dental Council register, so a wrong number is a lie anyone can catch.
-  const suffix = post.reviewer?.license ? ` (${post.reviewer.license})` : '';
+  const license = post.reviewer?.license ? ` (${post.reviewer.license})` : '';
+
+  // Only one of these three lines can be true of any given article, and the reader is
+  // entitled to know which. A team sign-off is not a named dentist, and neither is
+  // nothing at all — so they do not get to share a sentence.
+  const reviewLine = !post.reviewer
+    ? t('ยังไม่ผ่านการตรวจทานโดยทันตแพทย์', 'Not yet reviewed by a dentist')
+    : post.reviewer.kind === 'organization'
+      ? t(
+          `ตรวจทานโดยทีมทันตแพทย์ ${post.reviewer.name}`,
+          `Reviewed by the ${post.reviewer.name} dental team`,
+        )
+      : t(
+          `ตรวจทานทางการแพทย์โดย ${post.reviewer.name}${license}`,
+          `Medically reviewed by ${post.reviewer.name}${license}`,
+        );
 
   return (
     <>
@@ -157,15 +172,10 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
               }}
             />
             <div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: '#1A1410' }}>{post.authorName}</div>
-              <div style={{ fontSize: 12.5, color: 'rgba(61,53,46,.55)' }}>
-                {post.reviewer
-                  ? t(
-                      `ตรวจทานทางการแพทย์โดย ${post.reviewer.name}${suffix}`,
-                      `Medically reviewed by ${post.reviewer.name}${suffix}`,
-                    )
-                  : t('ยังไม่ผ่านการตรวจทานโดยทันตแพทย์', 'Not yet reviewed by a dentist')}
+              <div style={{ fontSize: 14, fontWeight: 700, color: '#1A1410' }}>
+                {t(`ทีมงาน ${post.authorName}`, `The ${post.authorName} team`)}
               </div>
+              <div style={{ fontSize: 12.5, color: 'rgba(61,53,46,.55)' }}>{reviewLine}</div>
             </div>
           </div>
 

@@ -44,11 +44,11 @@ export default async function ArticlePage({ params }: Props) {
   const url = `${SITE.url}/articles/${post.slug}`;
 
   /**
-   * Schema.org. Deliberately a plain Article with an Organization author, not a
-   * MedicalWebPage with a `reviewedBy`: no dentist has reviewed these yet, and
-   * claiming a medical reviewer in structured data that does not exist would be
-   * lying to Google in a machine-readable format. The `reviewedBy` block appears
-   * only once `articles.reviewer_name` is actually filled in.
+   * Schema.org. The `reviewedBy` block below appears only when `articles.reviewer_name`
+   * is actually filled in, and its @type follows `reviewer_type` — a company is not a
+   * Person and must never be dressed as one. Claiming a reviewer who does not exist,
+   * or a dentist where there is only a clinic, is lying to Google in a machine-readable
+   * format, which is the one format it can check against everything else it knows.
    */
   const articleLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -71,14 +71,17 @@ export default async function ArticlePage({ params }: Props) {
 
   if (post.reviewer) {
     articleLd['@type'] = 'MedicalWebPage';
-    articleLd.reviewedBy = {
-      '@type': 'Person',
-      name: post.reviewer.name,
-      jobTitle: 'Dentist',
-      // Emitted only when the clinic supplied a licence — an absent identifier is
-      // fine, an invented one is a false claim in machine-readable form.
-      ...(post.reviewer.license ? { identifier: post.reviewer.license } : {}),
-    };
+    articleLd.reviewedBy =
+      post.reviewer.kind === 'organization'
+        ? { '@type': 'Organization', name: post.reviewer.name, url: SITE.url }
+        : {
+            '@type': 'Person',
+            name: post.reviewer.name,
+            jobTitle: 'Dentist',
+            // Emitted only when the clinic supplied a licence — an absent identifier is
+            // fine, an invented one is a false claim in machine-readable form.
+            ...(post.reviewer.license ? { identifier: post.reviewer.license } : {}),
+          };
     articleLd.lastReviewed = post.reviewer.at;
   }
 
