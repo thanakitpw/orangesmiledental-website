@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useLang } from '@/lib/lang';
 import { mediaUrl } from '@/lib/media';
 import { BRANCHES } from '@/content/branches';
+import { SITE } from '@/content/site';
 
 export function SiteFooter() {
   const { t, tl } = useLang();
@@ -18,7 +19,7 @@ export function SiteFooter() {
 
   const social: { href: string; icon: React.ReactNode }[] = [
     {
-      href: 'https://lin.ee/79112s3',
+      href: SITE.lineUrl,
       icon: (
         <svg
           width="18"
@@ -35,32 +36,15 @@ export function SiteFooter() {
       ),
     },
     {
-      href: 'https://www.facebook.com/Orangesmiledentalclinic/',
+      href: SITE.fbUrl,
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
           <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
         </svg>
       ),
     },
-    {
-      href: 'https://instagram.com',
-      icon: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="2" y="2" width="20" height="20" rx="5" />
-          <circle cx="12" cy="12" r="4" />
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-        </svg>
-      ),
-    },
+    // The source's third icon pointed at instagram.com with no account behind it.
+    // Add an entry here if the clinic gives us a real profile.
   ];
 
   return (
@@ -173,14 +157,9 @@ export function SiteFooter() {
           <div style={{ fontWeight: 700, color: '#fff', fontSize: 14, marginBottom: 16 }}>
             {t('ติดต่อสำนักงานใหญ่', 'Head office')}
           </div>
-          <p style={{ fontSize: 13.5, lineHeight: 1.7, margin: 0 }}>
-            {t(
-              '320/46 แขวงคลองสองต้นนุ่น เขตลาดกระบัง กรุงเทพฯ 10520',
-              '320/46 Khlong Song Ton Nun, Lat Krabang, Bangkok 10520',
-            )}
-          </p>
+          <p style={{ fontSize: 13.5, lineHeight: 1.7, margin: 0 }}>{tl(SITE.address)}</p>
           <a
-            href="tel:0892459559"
+            href={SITE.telUrl}
             style={{
               display: 'block',
               marginTop: 12,
@@ -190,10 +169,10 @@ export function SiteFooter() {
               textDecoration: 'none',
             }}
           >
-            089-245-9559
+            {SITE.phone}
           </a>
           <a
-            href="mailto:orangesmiledental@gmail.com"
+            href={`mailto:${SITE.email}`}
             style={{
               display: 'block',
               marginTop: 6,
@@ -202,7 +181,7 @@ export function SiteFooter() {
               textDecoration: 'none',
             }}
           >
-            orangesmiledental@gmail.com
+            {SITE.email}
           </a>
           <div
             style={{
@@ -212,7 +191,7 @@ export function SiteFooter() {
               lineHeight: 1.6,
             }}
           >
-            {t('เปิดบริการทุกวัน 10:30–19:00 น.', 'Open daily 10:30–19:00')}
+            {tl(SITE.hours)}
           </div>
         </div>
       </div>

@@ -18,8 +18,8 @@ export interface Branch {
   lineUrl: string;
   line: string;
   fbUrl: string;
-  /** Free-text query behind the embedded map. */
-  mapQuery: string;
+  /** Exact clinic pin, read out of `mapUrl`. Drives the embedded map. */
+  coords: string;
   /** Canonical Google Maps short link. */
   mapUrl: string;
 }
@@ -46,7 +46,7 @@ export const BRANCHES: Branch[] = [
     lineUrl: 'https://lin.ee/OOoqOa3',
     line: '@orangerk',
     fbUrl: 'https://www.facebook.com/orangesmileromklao/',
-    mapQuery: 'การเคหะร่มเกล้า ลาดกระบัง กรุงเทพ',
+    coords: '13.7624012,100.7291678',
     mapUrl: 'https://maps.app.goo.gl/Fywau2vbChoKU7wt7',
   },
   {
@@ -68,7 +68,7 @@ export const BRANCHES: Branch[] = [
     lineUrl: 'https://lin.ee/YaWm8gP',
     line: '@orangeminburi',
     fbUrl: 'https://www.facebook.com/orangesmileminburi/',
-    mapQuery: 'ตลาดมีนบุรี กรุงเทพ',
+    coords: '13.8122816,100.7262953',
     mapUrl: 'https://maps.app.goo.gl/MPhxU6X1yQejbTVC9',
   },
   {
@@ -90,7 +90,7 @@ export const BRANCHES: Branch[] = [
     lineUrl: 'https://lin.ee/pqURLgN',
     line: '@orangebkk',
     fbUrl: 'https://www.facebook.com/orangesmiledentalclinicthemallbangkapi/',
-    mapQuery: 'Happy Land บางกะปิ กรุงเทพ',
+    coords: '13.7674835,100.6431722',
     mapUrl: 'https://maps.app.goo.gl/NwZvmUwvEojrqqXm8',
   },
   {
@@ -112,7 +112,7 @@ export const BRANCHES: Branch[] = [
     lineUrl: 'https://lin.ee/QYV5ZLU',
     line: '@orangeram',
     fbUrl: 'https://www.facebook.com/orangesmiledentalclinicramkhamhaeng/',
-    mapQuery: 'รามคำแหง 53 กรุงเทพ',
+    coords: '13.7599348,100.6201246',
     mapUrl: 'https://maps.app.goo.gl/j9nmMvuNxNp7RkKw6',
   },
   {
@@ -134,7 +134,7 @@ export const BRANCHES: Branch[] = [
     lineUrl: 'https://lin.ee/neDONWo',
     line: '@dr.amonjs',
     fbUrl: 'https://www.facebook.com/Amonpattaya/',
-    mapQuery: 'ตลาดเจ้าสัว หนองปรือ พัทยา',
+    coords: '12.9318003,100.9061748',
     mapUrl: 'https://maps.app.goo.gl/BcoEbsFeZmFpHZzA9',
   },
   {
@@ -156,7 +156,7 @@ export const BRANCHES: Branch[] = [
     lineUrl: 'https://lin.ee/9yXSXnq',
     line: '@dr.amonsmile',
     fbUrl: 'https://www.facebook.com/Dr.amondentalclinic/',
-    mapQuery: 'เนินพลับหวาน หนองปรือ พัทยา',
+    coords: '12.9311844,100.9096083',
     mapUrl: 'https://maps.app.goo.gl/oR44N9Kfm5YeaWF89',
   },
   {
@@ -178,7 +178,7 @@ export const BRANCHES: Branch[] = [
     lineUrl: 'https://lin.ee/OfDHxqC',
     line: '@pinksmiledental',
     fbUrl: 'https://www.facebook.com/pinksmiledental',
-    mapQuery: 'สยามคันทรีคลับ พัทยา ชลบุรี',
+    coords: '12.9408863,100.9210176',
     mapUrl: 'https://maps.app.goo.gl/NK74jSiTRTDzHRcB8',
   },
 ];
@@ -186,6 +186,10 @@ export const BRANCHES: Branch[] = [
 export const BRANCHES_BKK = BRANCHES.filter((b) => b.region === 'bkk');
 export const BRANCHES_PTY = BRANCHES.filter((b) => b.region === 'pty');
 
-/** Embedded-map src for a branch, matching `embed()` in Branches.dc.html. */
+/**
+ * Embedded-map src for a branch. The source's `embed()` searched a neighbourhood
+ * name ("การเคหะร่มเกล้า ลาดกระบัง กรุงเทพ"), which drops the pin on the district
+ * rather than the clinic. Feed it the branch's own coordinates instead.
+ */
 export const mapEmbed = (b: Branch) =>
-  `https://www.google.com/maps?q=${encodeURIComponent(b.mapQuery)}&z=15&output=embed`;
+  `https://www.google.com/maps?q=${b.coords}&z=16&output=embed`;

@@ -9,6 +9,7 @@ import { useLang } from '@/lib/lang';
 import { useReveal, revealNewlyMounted } from '@/lib/reveal';
 import { mediaUrl } from '@/lib/media';
 import { ARTICLES, ARTICLE_CHIPS, FEATURED, type ArticleCat } from '@/content/articles';
+import { SITE } from '@/content/site';
 
 const CSS = `
   *{box-sizing:border-box}
@@ -149,7 +150,7 @@ export default function ArticlesPage() {
           <a
             className="feat"
             data-reveal=""
-            href="https://line.me"
+            href={SITE.lineUrl}
             target="_blank"
             rel="noopener"
             style={{
@@ -367,7 +368,7 @@ export default function ArticlesPage() {
               <a
                 key={p.title.en}
                 className="post-card"
-                href="https://line.me"
+                href={SITE.lineUrl}
                 target="_blank"
                 rel="noopener"
                 style={{
@@ -533,7 +534,7 @@ export default function ArticlesPage() {
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
                 <a
                   className="pcta"
-                  href="https://line.me"
+                  href={SITE.lineUrl}
                   target="_blank"
                   rel="noopener"
                   style={{

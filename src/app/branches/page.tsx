@@ -7,6 +7,7 @@ import { useLang } from '@/lib/lang';
 import { useReveal } from '@/lib/reveal';
 import { mediaUrl } from '@/lib/media';
 import { BRANCHES_BKK, BRANCHES_PTY, mapEmbed, type Branch } from '@/content/branches';
+import { SITE } from '@/content/site';
 
 const CSS = `
   *{box-sizing:border-box}
@@ -600,7 +601,7 @@ export default function BranchesPage() {
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
                 <a
                   className="pcta"
-                  href="https://line.me"
+                  href={SITE.lineUrl}
                   target="_blank"
                   rel="noopener"
                   style={{
@@ -622,7 +623,7 @@ export default function BranchesPage() {
                 </a>
                 <a
                   className="pcta"
-                  href="tel:0892459559"
+                  href={SITE.telUrl}
                   style={{
                     height: 54,
                     padding: '0 26px',
@@ -639,7 +640,7 @@ export default function BranchesPage() {
                     backdropFilter: 'blur(8px)',
                   }}
                 >
-                  {t('โทรเลย', 'Call now')} · 089-245-9559
+                  {t('โทรเลย', 'Call now')} · {SITE.phone}
                 </a>
               </div>
             </div>

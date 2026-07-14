@@ -11,6 +11,7 @@ import { useBeforeAfter } from '@/lib/beforeAfter';
 import { mediaUrl } from '@/lib/media';
 import { CASES, type CaseCat } from '@/content/cases';
 import { GALLERY, GALLERY_CATS } from '@/content/gallery.generated';
+import { SITE } from '@/content/site';
 
 const CSS = `
   *{box-sizing:border-box}
@@ -640,7 +641,7 @@ export default function ReviewsPage() {
             >
               <a
                 className="pcta"
-                href="https://line.me"
+                href={SITE.lineUrl}
                 target="_blank"
                 rel="noopener"
                 style={{
