@@ -10,6 +10,7 @@
 --
 --   * nothing publishes without a named party taking responsibility,
 --   * a reviewer is all-or-nothing: name + licence + date, or none of the three,
+--     (0003 relaxes this: the licence became optional, the name and date did not)
 --   * `medically_reviewed` cannot be set unless a reviewer actually exists.
 --
 -- An unreviewed article can still go live; it simply cannot pretend otherwise, and

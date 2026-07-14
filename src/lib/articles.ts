@@ -39,8 +39,12 @@ export interface Post {
   publishedAt: string;
   authorName: string;
   authorCredentials: string | null;
-  /** Null until a dentist has actually read the piece and signed it off. */
-  reviewer: { name: string; license: string; at: string } | null;
+  /**
+   * Null until a dentist has actually read the piece and signed it off. The licence
+   * is optional — what makes the claim honest is a real named dentist who read it,
+   * not the number beside their name — but a name and a review date are not.
+   */
+  reviewer: { name: string; license: string | null; at: string } | null;
   medicallyReviewed: boolean;
   th: ArticleBody;
   en: ArticleBody;
@@ -125,7 +129,7 @@ function shape(row: Row): Post | null {
     authorName: row.author_name,
     authorCredentials: row.author_credentials,
     reviewer:
-      row.reviewer_name && row.reviewer_license && row.reviewed_at
+      row.reviewer_name && row.reviewed_at
         ? { name: row.reviewer_name, license: row.reviewer_license, at: row.reviewed_at }
         : null,
     medicallyReviewed: row.medically_reviewed,

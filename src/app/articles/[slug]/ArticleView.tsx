@@ -44,6 +44,11 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
   const { t, tl, track, isTH } = useLang();
   const body = isTH ? post.th : post.en;
 
+  // The licence is shown when the clinic gave us one, and simply omitted when they
+  // did not. Never invent one: a Thai dental licence is publicly checkable against
+  // the Dental Council register, so a wrong number is a lie anyone can catch.
+  const suffix = post.reviewer?.license ? ` (${post.reviewer.license})` : '';
+
   return (
     <>
       <PageStyles css={CSS} />
@@ -156,8 +161,8 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
               <div style={{ fontSize: 12.5, color: 'rgba(61,53,46,.55)' }}>
                 {post.reviewer
                   ? t(
-                      `ตรวจทานทางการแพทย์โดย ${post.reviewer.name} (${post.reviewer.license})`,
-                      `Medically reviewed by ${post.reviewer.name} (${post.reviewer.license})`,
+                      `ตรวจทานทางการแพทย์โดย ${post.reviewer.name}${suffix}`,
+                      `Medically reviewed by ${post.reviewer.name}${suffix}`,
                     )
                   : t('ยังไม่ผ่านการตรวจทานโดยทันตแพทย์', 'Not yet reviewed by a dentist')}
               </div>

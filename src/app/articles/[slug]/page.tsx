@@ -75,7 +75,9 @@ export default async function ArticlePage({ params }: Props) {
       '@type': 'Person',
       name: post.reviewer.name,
       jobTitle: 'Dentist',
-      identifier: post.reviewer.license,
+      // Emitted only when the clinic supplied a licence — an absent identifier is
+      // fine, an invented one is a false claim in machine-readable form.
+      ...(post.reviewer.license ? { identifier: post.reviewer.license } : {}),
     };
     articleLd.lastReviewed = post.reviewer.at;
   }
