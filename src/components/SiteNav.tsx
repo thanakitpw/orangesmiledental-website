@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useLang } from '@/lib/lang';
 import { mediaUrl } from '@/lib/media';
+import { SITE } from '@/content/site';
 
 export type NavKey = 'home' | 'services' | 'doctors' | 'branches' | 'reviews' | 'articles';
 
@@ -70,6 +71,7 @@ export function SiteNav({ active }: { active: NavKey }) {
         >
           <Link
             href="/"
+            className="osd-brand"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -85,6 +87,7 @@ export function SiteNav({ active }: { active: NavKey }) {
               style={{ width: 38, height: 38, objectFit: 'contain' }}
             />
             <span
+              className="osd-brandname"
               style={{
                 fontFamily: "'Outfit','Anuphan',sans-serif",
                 fontWeight: 800,
@@ -131,8 +134,12 @@ export function SiteNav({ active }: { active: NavKey }) {
             })}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 'none' }}>
+          <div
+            className="osd-navactions"
+            style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 'none' }}
+          >
             <div
+              className="osd-langtoggle"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -186,7 +193,7 @@ export function SiteNav({ active }: { active: NavKey }) {
 
             <a
               className="osd-cta"
-              href="https://line.me"
+              href={SITE.lineUrl}
               target="_blank"
               rel="noopener"
               style={{
@@ -316,7 +323,7 @@ export function SiteNav({ active }: { active: NavKey }) {
           })}
           <a
             className="osd-cta"
-            href="https://line.me"
+            href={SITE.lineUrl}
             target="_blank"
             rel="noopener"
             style={{

@@ -39,3 +39,56 @@ body {
     display: none !important;
   }
 }
+
+/* Phones. The source only ever hid the nav links, so the LINE button stayed in
+   the bar and pushed the burger past the right edge (the actions group needs
+   289px in a ~328px bar). The drawer already carries the same button, so drop
+   it from the bar here and keep logo + language + burger. */
+@media (max-width: 640px) {
+  .osd-navwrap .osd-cta {
+    display: none !important;
+  }
+}
+/* ===== Home hero headline =====
+   Held here rather than inline so the phone override below wins the cascade. */
+.osd-hero-h1 {
+  font-size: clamp(40px, 5.2vw, 64px);
+}
+@media (max-width: 640px) {
+  /* The source clamp bottoms out at 40px, which is wider than the screen it is
+     bottoming out for. Stay at 40px on a normal phone (390px) but keep scaling
+     below that so the headline never wraps mid-word. */
+  .osd-hero-h1 {
+    font-size: clamp(28px, 10.2vw, 40px);
+    text-align: center;
+  }
+  /* "เริ่มที่ Orange Smile" is the long line — ease it down relative to line one. */
+  .osd-hero-accent {
+    font-size: 0.86em;
+  }
+}
+
+/* !important throughout: the source styles every node inline, so a plain class
+   rule loses the cascade. */
+@media (max-width: 400px) {
+  .osd-navwrap > div {
+    gap: 8px !important;
+    padding: 0 10px 0 12px !important;
+  }
+  .osd-brandname {
+    font-size: 17px !important;
+  }
+  .osd-navactions {
+    gap: 6px !important;
+  }
+  .osd-langtoggle button {
+    padding: 5px 8px !important;
+  }
+}
+/* Below ~340px (Galaxy Fold cover screen and friends) even that does not fit —
+   drop the wordmark and let the logo carry the brand. */
+@media (max-width: 344px) {
+  .osd-brandname {
+    display: none !important;
+  }
+}

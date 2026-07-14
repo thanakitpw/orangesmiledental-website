@@ -16,6 +16,7 @@ import { HOME_SERVICES, HOME_STEPS } from '@/content/services';
 import { REVIEWS_LOOP } from '@/content/reviews';
 import { HOME_CASES } from '@/content/cases';
 import { HOME_POSTS } from '@/content/articles';
+import { SITE } from '@/content/site';
 
 const CSS = `
   .ba-card{transition:transform .25s,box-shadow .25s}
@@ -433,11 +434,13 @@ export default function HomePage() {
                 </span>
               </div>
 
+              {/* font-size lives in globals.css (.osd-hero-h1) so the phone
+                  override can win the cascade against these inline styles. */}
               <h1
+                className="osd-hero-h1"
                 style={{
                   fontFamily: "'Outfit','Anuphan',sans-serif",
                   fontWeight: 800,
-                  fontSize: 'clamp(40px,5.2vw,64px)',
                   lineHeight: 1.08,
                   color: '#1A1410',
                   margin: '22px 0 0',
@@ -446,7 +449,10 @@ export default function HomePage() {
               >
                 {t('รอยยิ้มที่คุณมั่นใจ', 'Confident smiles')}
                 <br />
-                <span style={{ position: 'relative', display: 'inline-block' }}>
+                <span
+                  className="osd-hero-accent"
+                  style={{ position: 'relative', display: 'inline-block' }}
+                >
                   <span style={{ color: '#FF7A00' }}>
                     {t('เริ่มที่ Orange Smile', 'start right here')}
                   </span>
@@ -1826,7 +1832,7 @@ export default function HomePage() {
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
                 <a
                   className="pcta"
-                  href="https://line.me"
+                  href={SITE.lineUrl}
                   target="_blank"
                   rel="noopener"
                   style={{
@@ -1863,7 +1869,7 @@ export default function HomePage() {
                 </a>
                 <a
                   className="pcta"
-                  href="tel:0892459559"
+                  href={SITE.telUrl}
                   style={{
                     height: 54,
                     padding: '0 26px',
@@ -1882,7 +1888,7 @@ export default function HomePage() {
                   }}
                 >
                   {PHONE_ICON(18)}
-                  {t('โทรเลย', 'Call now')} · 089-245-9559
+                  {t('โทรเลย', 'Call now')} · {SITE.phone}
                 </a>
               </div>
             </div>
@@ -1927,7 +1933,7 @@ export default function HomePage() {
                 {t('ปรึกษาฟรีกับทีมงาน', 'Chat with our team')}
               </div>
               <a
-                href="https://line.me"
+                href={SITE.lineUrl}
                 target="_blank"
                 rel="noopener"
                 style={{
@@ -1960,7 +1966,7 @@ export default function HomePage() {
                 </span>
               </a>
               <a
-                href="tel:0892459559"
+                href={SITE.telUrl}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
