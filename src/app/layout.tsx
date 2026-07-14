@@ -1,12 +1,32 @@
 import type { Metadata } from 'next';
 import { LanguageProvider } from '@/lib/lang';
+import { SITE } from '@/content/site';
+import { mediaUrl } from '@/lib/media';
 import './globals.css';
 
+const TITLE = 'Orange Smile Dental — คลินิกทันตกรรมครบวงจร 7 สาขา กรุงเทพฯ–พัทยา';
+const DESCRIPTION =
+  'กลุ่มคลินิกทันตกรรมครบวงจร ดูแลโดยทีมทันตแพทย์เฉพาะทางกว่า 20 ท่าน ใกล้บ้านคุณทั้งกรุงเทพฯ และพัทยา';
+
 export const metadata: Metadata = {
-  title: 'Orange Smile Dental — คลินิกทันตกรรมครบวงจร 7 สาขา กรุงเทพฯ–พัทยา',
-  description:
-    'กลุ่มคลินิกทันตกรรมครบวงจร ดูแลโดยทีมทันตแพทย์เฉพาะทางกว่า 20 ท่าน ใกล้บ้านคุณทั้งกรุงเทพฯ และพัทยา',
-  icons: { icon: '/media/assets/media/image4.webp' },
+  // Without this, canonical and og:image resolve against the deployment URL and
+  // Google indexes the *.vercel.app copy instead of the real domain.
+  metadataBase: new URL(SITE.url),
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: '/' },
+  // The logo lives in Supabase Storage; /media only exists on a dev machine.
+  icons: { icon: mediaUrl('assets/media/image4.webp') },
+  openGraph: {
+    type: 'website',
+    siteName: SITE.name,
+    locale: 'th_TH',
+    url: SITE.url,
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: mediaUrl('assets/hero/home-hero-cover.webp'), width: 1200, height: 630 }],
+  },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

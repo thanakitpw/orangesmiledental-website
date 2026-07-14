@@ -5,6 +5,18 @@ import type { Localized } from '@/lib/lang';
  * Branch-specific buttons use the per-branch links in `branches.ts` instead.
  */
 export const SITE = {
+  /**
+   * Canonical origin. Every canonical URL, sitemap entry and JSON-LD id is built
+   * from this, so it must be the domain we actually want indexed — not the
+   * *.vercel.app deployment URL.
+   */
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://orangesmiledental.com',
+  name: 'Orange Smile Dental',
+  legalName: {
+    th: 'บริษัท ออเร้นจ์ สไมล์ เด็นทัล ไทย กรุ๊ป จำกัด',
+    en: 'Orange Smile Dental Thai Group Co., Ltd.',
+  } satisfies Localized,
+
   /** Official LINE OA for the group. The source HTML shipped a `https://line.me` stub. */
   lineUrl: 'https://lin.ee/79112s3',
   fbUrl: 'https://www.facebook.com/Orangesmiledentalclinic/',

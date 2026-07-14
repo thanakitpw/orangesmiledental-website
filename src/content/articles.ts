@@ -177,15 +177,21 @@ export const ARTICLE_CHIPS: { key: ArticleCat | 'all'; label: Localized }[] = [
   { key: 'general', label: { th: 'ทั่วไป', en: 'General' } },
 ];
 
-/** The home-page blog teasers use their own covers, not the Articles-page ones. */
+/**
+ * The home-page blog teasers use their own covers, not the Articles-page ones.
+ * `slug` points at the real article in Supabase, so the card opens the piece
+ * itself rather than dropping the reader on the index.
+ */
 export const HOME_POSTS = [
   {
+    slug: 'signs-you-need-braces',
     title: { th: '5 สัญญาณที่บอกว่าถึงเวลาจัดฟัน', en: '5 signs it is time for braces' },
     cat: { th: 'จัดฟัน', en: 'Orthodontics' },
     date: { th: '12 มิ.ย. 2026', en: 'Jun 12, 2026' },
     cover: 'assets/media/image16.webp',
   },
   {
+    slug: 'after-dental-implant-care',
     title: {
       th: 'ดูแลตัวเองอย่างไรหลังฝังรากฟันเทียม',
       en: 'Caring for yourself after an implant',
@@ -195,6 +201,7 @@ export const HOME_POSTS = [
     cover: 'assets/media/image24.webp',
   },
   {
+    slug: 'safe-teeth-whitening',
     title: { th: 'ฟอกสีฟันให้ขาวอย่างปลอดภัย', en: 'How to whiten your teeth safely' },
     cat: { th: 'ความงาม', en: 'Aesthetic' },
     date: { th: '28 พ.ค. 2026', en: 'May 28, 2026' },

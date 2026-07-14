@@ -1676,9 +1676,9 @@ export default function HomePage() {
           >
             {HOME_POSTS.map((p) => (
               <Link
-                key={p.title.en}
+                key={p.slug}
                 className="post-card"
-                href="/articles"
+                href={`/articles/${p.slug}`}
                 style={{
                   textDecoration: 'none',
                   background: '#fff',
