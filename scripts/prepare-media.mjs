@@ -52,23 +52,45 @@ async function emit(sourceFile, key, { maxWidth = 1800, quality = 82 } = {}) {
   if (converted % 25 === 0) process.stdout.write(`  …${converted} converted\n`);
 }
 
-/** The hero cover only exists as a base64 data URI inside the slot state file. */
+/**
+ * The hero cover. The designer baked a low-res (1200px) copy into the slot state as a
+ * base64 data URI; with withoutEnlargement that capped the output at 1200px, and it read
+ * visibly soft — "แตก" — on retina desktops where the banner is drawn ~1200 CSS px wide.
+ * The real composite is the 8000px original under uploads/, so resize that instead, down
+ * to a retina-friendly 2400px.
+ *
+ * The key is version-tagged (-2x) on purpose: the old object ships with a one-year
+ * immutable cache-control, so a browser that already has it will only re-fetch under a
+ * URL it has never seen.
+ */
 async function emitHeroCover() {
-  const statePath = path.join(SRC, '.image-slots.state.json');
-  const state = JSON.parse(await readFile(statePath, 'utf8'));
-  const dataUri = state['home-hero-cover']?.u;
-  if (!dataUri) {
-    console.warn('!  home-hero-cover not found in .image-slots.state.json — hero will be blank');
-    return;
+  const key = 'assets/hero/home-hero-cover-2x.webp';
+  const original = path.join(SRC, 'uploads', 'home-hero-source.jpg');
+
+  let source = original;
+  let sourceLabel = path.relative(SRC, original);
+  if (!existsSync(original)) {
+    // Fallback: the low-res copy embedded in the slot state.
+    const state = JSON.parse(await readFile(path.join(SRC, '.image-slots.state.json'), 'utf8'));
+    const dataUri = state['home-hero-cover']?.u;
+    if (!dataUri) {
+      console.warn('!  no hero source found — hero will be blank');
+      return;
+    }
+    source = Buffer.from(dataUri.slice(dataUri.indexOf(',') + 1), 'base64');
+    sourceLabel = '.image-slots.state.json#home-hero-cover';
   }
-  const base64 = dataUri.slice(dataUri.indexOf(',') + 1);
-  const buf = Buffer.from(base64, 'base64');
-  const dest = path.join(OUT, 'assets/hero/home-hero-cover.webp');
+
+  const dest = path.join(OUT, key);
   await mkdir(path.dirname(dest), { recursive: true });
-  await sharp(buf).resize({ width: 2400, withoutEnlargement: true }).webp({ quality: 86 }).toFile(dest);
-  manifest.push({ key: 'assets/hero/home-hero-cover.webp', source: '.image-slots.state.json#home-hero-cover' });
+  await sharp(source)
+    .rotate() // honour EXIF orientation before metadata is stripped
+    .resize({ width: 2400, withoutEnlargement: true })
+    .webp({ quality: 86 })
+    .toFile(dest);
+  manifest.push({ key, source: sourceLabel });
   converted++;
-  console.log('✓ hero cover extracted');
+  console.log('✓ hero cover extracted (2400px from the original)');
 }
 
 /** Walk assets/** and mirror it into public/media/assets/**, swapping raster ext -> .webp. */

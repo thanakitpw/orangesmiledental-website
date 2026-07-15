@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     url: SITE.url,
     title: TITLE,
     description: DESCRIPTION,
-    images: [{ url: mediaUrl('assets/hero/home-hero-cover.webp'), width: 1200, height: 630 }],
+    images: [{ url: mediaUrl('assets/hero/home-hero-cover-2x.webp'), width: 2400, height: 1015 }],
   },
   twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION },
 };

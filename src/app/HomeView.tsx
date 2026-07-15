@@ -379,7 +379,7 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={mediaUrl('assets/hero/home-hero-cover.webp')}
+              src={mediaUrl('assets/hero/home-hero-cover-2x.webp')}
               alt=""
               style={{
                 position: 'absolute',
