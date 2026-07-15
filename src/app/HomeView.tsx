@@ -160,9 +160,9 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
   };
 
   const stats = [
-    { n: '7', l: t('สาขา', 'Branches') },
-    { n: '20+', l: t('ทันตแพทย์', 'Dentists') },
-    { n: '10+', l: t('ปีประสบการณ์', 'Years experience') },
+    { n: '8', l: t('สาขา', 'Branches') },
+    { n: '100+', l: t('ทันตแพทย์', 'Dentists') },
+    { n: '15+', l: t('ปีประสบการณ์', 'Years experience') },
     { n: '4.9★', l: t('รีวิวพึงพอใจ', 'Avg. rating') },
   ];
 
@@ -428,8 +428,8 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
                 </div>
                 <span style={{ fontSize: 12.5, fontWeight: 600, color: '#3D352E' }}>
                   {t(
-                    'ดูแลรอยยิ้มกว่า 7 สาขา ทั่วกรุงเทพฯ–พัทยา',
-                    'Smiles cared for across 7 branches',
+                    'ดูแลรอยยิ้มกว่า 8 สาขา ทั่วกรุงเทพฯ–พัทยา',
+                    'Smiles cared for across 8 branches',
                   )}
                 </span>
               </div>
@@ -483,8 +483,8 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
                 }}
               >
                 {t(
-                  'กลุ่มคลินิกทันตกรรมครบวงจร ดูแลโดยทีมทันตแพทย์เฉพาะทางกว่า 20 ท่าน ใกล้บ้านคุณทั้งกรุงเทพฯ และพัทยา',
-                  'A full-service dental group with 20+ specialist dentists — close to you across Bangkok and Pattaya.',
+                  'กลุ่มคลินิกทันตกรรมครบวงจร ดูแลโดยทีมทันตแพทย์เฉพาะทางกว่า 100 ท่าน ใกล้บ้านคุณทั้งกรุงเทพฯ และพัทยา',
+                  'A full-service dental group with 100+ specialist dentists — close to you across Bangkok and Pattaya.',
                 )}
               </p>
 
@@ -971,8 +971,8 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
               <h2 style={h2Style}>{t('พบทีมทันตแพทย์ของเรา', 'Meet our dentists')}</h2>
               <p style={{ ...subStyle, margin: '12px 0 0' }}>
                 {t(
-                  'ทันตแพทย์เฉพาะทางกว่า 20 ท่าน จากสถาบันชั้นนำ',
-                  '20+ specialists from leading universities',
+                  'ทันตแพทย์เฉพาะทางกว่า 100 ท่าน จากสถาบันชั้นนำ',
+                  '100+ specialists from leading universities',
                 )}
               </p>
             </div>
@@ -1537,8 +1537,8 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
             </h2>
             <span style={{ fontSize: 14, color: 'rgba(61,53,46,.6)' }}>
               {t(
-                '7 สาขา ทั่วกรุงเทพฯ และพัทยา เปิดบริการทุกวัน',
-                '7 branches across Bangkok & Pattaya, open daily',
+                '8 สาขา ทั่วกรุงเทพฯ และพัทยา เปิดบริการทุกวัน',
+                '8 branches across Bangkok & Pattaya, open daily',
               )}
             </span>
           </div>

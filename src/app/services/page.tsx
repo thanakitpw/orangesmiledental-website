@@ -34,7 +34,7 @@ export default function ServicesPage() {
     t('ทีมเฉพาะทาง', 'Specialist team'),
     t('เทคโนโลยีดิจิทัล', 'Digital tech'),
     t('ผ่อน 0%', '0% installment'),
-    t('7 สาขา', '7 branches'),
+    t('8 สาขา', '8 branches'),
   ];
 
   const consult = t('สอบถาม / นัดหมาย', 'Ask / book now');

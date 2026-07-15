@@ -4,9 +4,9 @@ import { SITE } from '@/content/site';
 import { mediaUrl } from '@/lib/media';
 import './globals.css';
 
-const TITLE = 'Orange Smile Dental — คลินิกทันตกรรมครบวงจร 7 สาขา กรุงเทพฯ–พัทยา';
+const TITLE = 'Orange Smile Dental — คลินิกทันตกรรมครบวงจร 8 สาขา กรุงเทพฯ–พัทยา';
 const DESCRIPTION =
-  'กลุ่มคลินิกทันตกรรมครบวงจร ดูแลโดยทีมทันตแพทย์เฉพาะทางกว่า 20 ท่าน ใกล้บ้านคุณทั้งกรุงเทพฯ และพัทยา';
+  'กลุ่มคลินิกทันตกรรมครบวงจร ดูแลโดยทีมทันตแพทย์เฉพาะทางกว่า 100 ท่าน ใกล้บ้านคุณทั้งกรุงเทพฯ และพัทยา';
 
 export const metadata: Metadata = {
   // Without this, canonical and og:image resolve against the deployment URL and

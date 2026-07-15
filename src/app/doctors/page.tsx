@@ -35,8 +35,8 @@ export default function DoctorsPage() {
   useReveal(0.92, 1500);
 
   const stats = [
-    { n: '20+', l: t('ทันตแพทย์', 'Dentists') },
-    { n: '7', l: t('สาขา', 'Branches') },
+    { n: '100+', l: t('ทันตแพทย์', 'Dentists') },
+    { n: '8', l: t('สาขา', 'Branches') },
     { n: '7', l: t('สาขาเฉพาะทาง', 'Specialties') },
     { n: '4.9★', l: t('คะแนนรีวิว', 'Rating') },
   ];
@@ -132,8 +132,8 @@ export default function DoctorsPage() {
             </h1>
             <p style={{ fontSize: 17.5, color: 'rgba(61,53,46,.64)', margin: '18px 0 0' }}>
               {t(
-                'ทีมทันตแพทย์กว่า 20 ท่าน จากสถาบันชั้นนำ พร้อมดูแลทุกความต้องการด้านสุขภาพช่องปากของคุณ',
-                '20+ dentists from leading universities, ready to care for every dental need.',
+                'ทีมทันตแพทย์กว่า 100 ท่าน จากสถาบันชั้นนำ พร้อมดูแลทุกความต้องการด้านสุขภาพช่องปากของคุณ',
+                '100+ dentists from leading universities, ready to care for every dental need.',
               )}
             </p>
           </div>

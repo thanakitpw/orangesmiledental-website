@@ -347,7 +347,7 @@ export default function BranchesPage() {
                 letterSpacing: track,
               }}
             >
-              {t('7 สาขา ใกล้บ้านคุณ', '7 branches near you')}
+              {t('8 สาขา ใกล้บ้านคุณ', '8 branches near you')}
             </h1>
             <p style={{ fontSize: 17.5, color: 'rgba(61,53,46,.64)', margin: '18px 0 0' }}>
               {t(
