@@ -178,9 +178,10 @@ export const ARTICLE_CHIPS: { key: ArticleCat | 'all'; label: Localized }[] = [
 ];
 
 /**
- * The home-page blog teasers use their own covers, not the Articles-page ones.
- * `slug` points at the real article in Supabase, so the card opens the piece
- * itself rather than dropping the reader on the index.
+ * The home-page blog teasers. `slug` points at the real article in Supabase, so the
+ * card opens the piece itself rather than dropping the reader on the index — and the
+ * covers are the same `cover_key` images the article pages use, so a card and the page
+ * it opens show one picture, not two. Keep these in step with `articles.cover_key`.
  */
 export const HOME_POSTS = [
   {
@@ -188,7 +189,7 @@ export const HOME_POSTS = [
     title: { th: '5 สัญญาณที่บอกว่าถึงเวลาจัดฟัน', en: '5 signs it is time for braces' },
     cat: { th: 'จัดฟัน', en: 'Orthodontics' },
     date: { th: '12 มิ.ย. 2026', en: 'Jun 12, 2026' },
-    cover: 'assets/media/image16.webp',
+    cover: 'assets/media/blog/cover-ortho.webp',
   },
   {
     slug: 'after-dental-implant-care',
@@ -198,13 +199,13 @@ export const HOME_POSTS = [
     },
     cat: { th: 'รากฟันเทียม', en: 'Implants' },
     date: { th: '5 มิ.ย. 2026', en: 'Jun 5, 2026' },
-    cover: 'assets/media/image24.webp',
+    cover: 'assets/media/blog/cover-implant-care.webp',
   },
   {
     slug: 'safe-teeth-whitening',
     title: { th: 'ฟอกสีฟันให้ขาวอย่างปลอดภัย', en: 'How to whiten your teeth safely' },
     cat: { th: 'ความงาม', en: 'Aesthetic' },
     date: { th: '28 พ.ค. 2026', en: 'May 28, 2026' },
-    cover: 'assets/media/image22.webp',
+    cover: 'assets/media/blog/cover-whitening.webp',
   },
 ];
