@@ -177,13 +177,31 @@ export const ARTICLE_CHIPS: { key: ArticleCat | 'all'; label: Localized }[] = [
   { key: 'general', label: { th: 'ทั่วไป', en: 'General' } },
 ];
 
+/** The shape a home-page blog card renders — localized fields, ready to drop in. */
+export type HomePost = {
+  slug: string;
+  title: Localized;
+  cat: Localized;
+  date: Localized;
+  cover: string;
+};
+
+/** Category → its localized chip label. Total over every ArticleCat by construction. */
+export const CAT_LABEL: Record<ArticleCat, Localized> = {
+  ortho: { th: 'จัดฟัน', en: 'Orthodontics' },
+  implants: { th: 'รากฟันเทียม', en: 'Implants' },
+  aesthetic: { th: 'ความงาม', en: 'Aesthetic' },
+  pediatric: { th: 'เด็ก', en: 'Pediatric' },
+  general: { th: 'ทั่วไป', en: 'General' },
+};
+
 /**
- * The home-page blog teasers. `slug` points at the real article in Supabase, so the
- * card opens the piece itself rather than dropping the reader on the index — and the
- * covers are the same `cover_key` images the article pages use, so a card and the page
- * it opens show one picture, not two. Keep these in step with `articles.cover_key`.
+ * Fallback teasers for the home page, used only when the live query returns nothing —
+ * the DB is unreachable, or a local dev run has no Supabase keys. The real cards come
+ * from `listPosts()` in the server page (src/app/page.tsx), so these three exist purely
+ * so the section is never empty. Keep them on real slugs and real cover_key images.
  */
-export const HOME_POSTS = [
+export const HOME_POSTS: HomePost[] = [
   {
     slug: 'signs-you-need-braces',
     title: { th: '5 สัญญาณที่บอกว่าถึงเวลาจัดฟัน', en: '5 signs it is time for braces' },
