@@ -36,6 +36,7 @@ const CSS = `
   .osd-prose a{color:#F26C00;font-weight:600;text-decoration:none;border-bottom:1.5px solid rgba(255,122,0,.35)}
   .osd-prose a:hover{border-bottom-color:#FF7A00}
   .osd-prose blockquote{margin:24px 0 0;padding:2px 0 2px 18px;border-left:3px solid #FFB04D;color:rgba(61,53,46,.8)}
+  .osd-prose img{display:block;width:100%;max-width:600px;height:auto;margin:30px auto 6px;border-radius:16px;box-shadow:0 18px 44px -28px rgba(0,0,0,.35)}
   .osd-prose h2:first-child,.osd-prose p:first-child{margin-top:0}
   @media(max-width:640px){.osd-prose{font-size:16px}.osd-prose h2{font-size:22px}.osd-prose h3{font-size:18.5px}}
 `;

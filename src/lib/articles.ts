@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { Marked } from 'marked';
+import { mediaUrl } from '@/lib/media';
 import type { Localized } from '@/lib/lang';
 import type { ArticleCat } from '@/content/articles';
 
@@ -65,6 +66,15 @@ const md = new Marked({
   breaks: false,
   renderer: {
     html: () => '',
+    // Body images are stored as bare media keys ("assets/media/blog/content/x.webp")
+    // so they resolve through the same Supabase-or-local path as every other image —
+    // an absolute URL is passed through untouched. Lazy-loaded: these sit below the fold.
+    image({ href, title, text }) {
+      const src = mediaUrl(href);
+      const alt = (text ?? '').replace(/"/g, '&quot;');
+      const t = title ? ` title="${title.replace(/"/g, '&quot;')}"` : '';
+      return `<img src="${src}" alt="${alt}"${t} loading="lazy" />`;
+    },
   },
 });
 
