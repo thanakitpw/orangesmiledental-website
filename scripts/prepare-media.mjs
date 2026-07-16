@@ -12,7 +12,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
-import { GALLERY_GROUPS, GALLERY_CATS } from './media-groups.mjs';
+import { GALLERY_GROUPS, GALLERY_CATS, GALLERY_PUBLIC } from './media-groups.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'Website creation request');
@@ -110,10 +110,16 @@ async function emitAssets(dir = 'assets') {
   }
 }
 
-/** Gallery files carry Thai names; re-key them to ASCII `gallery/<cat>/NNN.webp`. */
+/**
+ * Gallery files carry Thai names; re-key them to ASCII `gallery/<cat>/NNN.webp`.
+ *
+ * Every file is still converted and manifested — the archive keeps its numbering
+ * and stays uploaded — but only the GALLERY_PUBLIC allowlist reaches the page.
+ */
 async function emitGallery() {
   const counters = {};
   const items = [];
+  let held = 0;
   for (const [cat, dir, files] of GALLERY_GROUPS) {
     for (const file of files) {
       const source = path.join(SRC, 'uploads', 'หัตถการ', dir, file);
@@ -122,11 +128,14 @@ async function emitGallery() {
         continue;
       }
       counters[cat] = (counters[cat] ?? 0) + 1;
-      const key = `gallery/${cat}/${String(counters[cat]).padStart(3, '0')}.webp`;
+      const id = `${cat}/${String(counters[cat]).padStart(3, '0')}`;
+      const key = `gallery/${id}.webp`;
       await emit(source, key, { maxWidth: 1200, quality: 78 });
-      items.push({ key, cat });
+      if (GALLERY_PUBLIC.has(id)) items.push({ key, cat });
+      else held++;
     }
   }
+  console.log(`✓ gallery curated — ${items.length} public, ${held} held back as clinical records`);
   return items;
 }
 

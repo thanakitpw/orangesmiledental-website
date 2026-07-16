@@ -23,6 +23,43 @@ export const GALLERY_GROUPS = [
   ['review', 'รีวิวทันตกรรม(ณัฐทรงสักก์ หนือหมอหยอง)/', ['S__111214596.jpg', 'S__111214598.jpg', 'S__111214600.jpg', 'S__111214601.jpg', 'S__111214602.jpg', 'S__111214603.jpg', 'S__111214604.jpg', 'S__111214605.jpg', 'S__111214606.jpg', 'S__111214607.jpg', 'S__111214608.jpg']],
 ];
 
+/**
+ * Which generated images the public Reviews gallery is allowed to show.
+ *
+ * GALLERY_GROUPS is the full clinical archive — it also holds X-rays, plaster
+ * casts, surgical photos, mirror-view occlusal shots and heavily annotated
+ * collages. Those are records, not marketing: they read as unpleasant or
+ * (for the mirror shots) simply upside-down to anyone who is not a dentist.
+ * So the page shows this allowlist only — front-facing smiles and clean
+ * before/afters.
+ *
+ * Keys are the generated `<cat>/NNN` names, which stay stable because the
+ * numbering counter still runs over every file in GALLERY_GROUPS. To surface
+ * an image again, add its key here and re-run `npm run media:prepare`.
+ */
+export const GALLERY_PUBLIC = new Set([
+  // Braces — clean before/after pairs; the retractor and mirror shots stay out.
+  'ortho/003', 'ortho/009', 'ortho/010', 'ortho/015', 'ortho/017',
+  'ortho/027', 'ortho/050', 'ortho/069', 'ortho/074', 'ortho/075',
+  // Veneers — the whole set is already front-facing and consistent.
+  'veneer/001', 'veneer/002', 'veneer/003', 'veneer/004', 'veneer/005',
+  'veneer/006', 'veneer/007', 'veneer/008', 'veneer/009', 'veneer/010',
+  // Whitening — shade-guide comparisons read clearly as a result.
+  'whitening/001', 'whitening/002', 'whitening/003', 'whitening/004', 'whitening/005',
+  // Dentures
+  'denture/001', 'denture/002',
+  // Bonding — smiles and front-teeth close-ups; tools and gloves stay out.
+  'bonding/001', 'bonding/002', 'bonding/003', 'bonding/006', 'bonding/007',
+  'bonding/008', 'bonding/009', 'bonding/010', 'bonding/011', 'bonding/012',
+  'bonding/013', 'bonding/014', 'bonding/018', 'bonding/019', 'bonding/020',
+  'bonding/021', 'bonding/022', 'bonding/023', 'bonding/024', 'bonding/025',
+  'bonding/026',
+  // Implants — the rest of this group is X-rays, lab casts and surgery.
+  'implant/012', 'implant/017',
+  // Case reviews
+  'review/003', 'review/008', 'review/009', 'review/010',
+]);
+
 // Category label lookup, matching the labels in the source component.
 export const GALLERY_CATS = {
   ortho: { th: 'จัดฟัน', en: 'Braces' },
