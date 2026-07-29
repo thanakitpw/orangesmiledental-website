@@ -10,13 +10,13 @@ import { useLang } from '@/lib/lang';
 import { useReveal } from '@/lib/reveal';
 import { useBeforeAfter } from '@/lib/beforeAfter';
 import { mediaUrl } from '@/lib/media';
-import { BRANCHES_BKK, BRANCHES_PTY, type Branch } from '@/content/branches';
-import { DOCTORS, HERO_FACES } from '@/content/doctors';
-import { HOME_SERVICES, HOME_STEPS } from '@/content/services';
-import { REVIEWS_LOOP } from '@/content/reviews';
-import { HOME_CASES } from '@/content/cases';
+import { useSiteSettings, useBranches } from '@/lib/site-data';
+import type { Branch } from '@/content/branches';
+import type { Doctor } from '@/content/doctors';
+import type { HomeService, Step } from '@/content/services';
+import type { Review } from '@/content/reviews';
+import type { CaseItem } from '@/lib/site-content';
 import type { HomePost } from '@/content/articles';
-import { SITE } from '@/content/site';
 
 const CSS = `
   .ba-card{transition:transform .25s,box-shadow .25s}
@@ -138,11 +138,31 @@ const sectionKicker: React.CSSProperties = {
   color: '#FF7A00',
 };
 
-export function HomeView({ posts }: { posts: HomePost[] }) {
+export interface HomeData {
+  posts: HomePost[];
+  doctors: Doctor[];
+  heroFaces: string[];
+  services: HomeService[];
+  steps: Step[];
+  reviews: Review[];
+  cases: CaseItem[];
+}
+
+export function HomeView({ posts, doctors, heroFaces, services, steps, reviews, cases }: HomeData) {
   const { t, tl, track } = useLang();
+  const SITE = useSiteSettings();
+  const branches = useBranches();
   const [chat, setChat] = useState(false);
   useReveal(0.92, 1400);
   const { posOf, handlers } = useBeforeAfter(50);
+
+  const BRANCHES_BKK = branches.filter((b) => b.region === 'bkk');
+  const BRANCHES_PTY = branches.filter((b) => b.region === 'pty');
+
+  // The marquee translates by -50%, so the list has to appear twice for the loop
+  // to be seamless. Duplicating here rather than in the data keeps the admin's
+  // "6 reviews" honest.
+  const REVIEWS_LOOP = [...reviews, ...reviews];
 
   const h2Style: React.CSSProperties = {
     fontFamily: "'Outfit','Anuphan',sans-serif",
@@ -408,7 +428,7 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
                 }}
               >
                 <div style={{ display: 'flex' }}>
-                  {HERO_FACES.map((f, i) => (
+                  {heroFaces.map((f, i) => (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       key={f}
@@ -421,7 +441,7 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
                         objectFit: 'cover',
                         objectPosition: 'top center',
                         border: '2px solid #fff',
-                        marginRight: i === HERO_FACES.length - 1 ? undefined : -9,
+                        marginRight: i === heroFaces.length - 1 ? undefined : -9,
                       }}
                     />
                   ))}
@@ -781,7 +801,7 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
               gap: 20,
             }}
           >
-            {HOME_SERVICES.map((s) => (
+            {services.map((s) => (
               <div
                 key={s.name.en}
                 className="svc-card"
@@ -899,7 +919,7 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
               gap: 20,
             }}
           >
-            {HOME_STEPS.map((st) => (
+            {steps.map((st) => (
               <div
                 key={st.n}
                 data-reveal=""
@@ -1009,7 +1029,7 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
               scrollSnapType: 'x mandatory',
             }}
           >
-            {DOCTORS.map((d) => (
+            {doctors.map((d) => (
               <div
                 key={d.name}
                 className="den-card"
@@ -1103,11 +1123,11 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
               gap: 22,
             }}
           >
-            {HOME_CASES.map((c) => {
-              const { posPct, clip } = posOf(c.key);
+            {cases.map((c) => {
+              const { posPct, clip } = posOf(c.id);
               return (
                 <div
-                  key={c.key}
+                  key={c.id}
                   className="ba-card"
                   data-reveal=""
                   style={{
@@ -1120,7 +1140,7 @@ export function HomeView({ posts }: { posts: HomePost[] }) {
                 >
                   <div
                     className="ba-slider"
-                    data-key={c.key}
+                    data-key={c.id}
                     {...handlers}
                     style={{
                       position: 'relative',

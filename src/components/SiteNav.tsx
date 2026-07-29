@@ -4,12 +4,15 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useLang } from '@/lib/lang';
 import { mediaUrl } from '@/lib/media';
-import { SITE } from '@/content/site';
+import { useSiteSettings } from '@/lib/site-data';
 
 export type NavKey = 'home' | 'services' | 'doctors' | 'branches' | 'reviews' | 'articles';
 
 export function SiteNav({ active }: { active: NavKey }) {
   const { t, setTH, setEN, isTH } = useLang();
+  // Was a literal imported from src/content/site; now whatever the clinic last
+  // saved in the admin, fetched once in the root layout.
+  const SITE = useSiteSettings();
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
 

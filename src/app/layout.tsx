@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { LanguageProvider } from '@/lib/lang';
+import { SiteDataProvider } from '@/lib/site-data';
+import { getSiteSettings, getBranches } from '@/lib/site-content';
 import { SITE } from '@/content/site';
 import { mediaUrl } from '@/lib/media';
 import './globals.css';
@@ -29,7 +31,18 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+/**
+ * The nav and footer on every page read the clinic's contact details and branch
+ * list, so they are fetched once here rather than threaded through six pages.
+ * Both fall back to `src/content/` if Supabase is unreachable, which is why this
+ * cannot fail the render.
+ *
+ * Saving in the admin calls `revalidatePath('/', 'layout')`, which is what pushes
+ * a changed phone number out of this layout's cache across the whole site.
+ */
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const [settings, branches] = await Promise.all([getSiteSettings(), getBranches()]);
+
   return (
     <html lang="th">
       <head>
@@ -43,7 +56,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <SiteDataProvider value={{ settings, branches }}>{children}</SiteDataProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

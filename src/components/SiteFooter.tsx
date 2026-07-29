@@ -3,11 +3,14 @@
 import Link from 'next/link';
 import { useLang } from '@/lib/lang';
 import { mediaUrl } from '@/lib/media';
-import { BRANCHES } from '@/content/branches';
-import { SITE } from '@/content/site';
+import { useSiteSettings, useBranches } from '@/lib/site-data';
 
 export function SiteFooter() {
   const { t, tl } = useLang();
+  // Both were literals imported from src/content; the root layout now supplies
+  // whatever the clinic last saved, falling back to those same literals.
+  const SITE = useSiteSettings();
+  const BRANCHES = useBranches();
 
   const links = [
     { href: '/services', label: t('บริการ', 'Services') },

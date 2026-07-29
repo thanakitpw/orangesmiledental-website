@@ -46,33 +46,74 @@ npm run dev
 **วิธีสลับแหล่งรูป:** `src/lib/media.ts` จะใช้ Supabase อัตโนมัติเมื่อมี `NEXT_PUBLIC_SUPABASE_URL`
 ถ้าไม่มีจะ fallback ไป `public/media` — เว็บจึงรันได้ทั้งก่อนและหลังมี Supabase
 
+## หลังบ้าน (`/admin`)
+
+เนื้อหาทั้งเว็บแก้ได้จากหลังบ้านโดยไม่ต้อง deploy ใหม่ — บทความ รูปภาพ รีวิว เคส before/after
+แกลเลอรี ทีมหมอ สาขา บริการ และข้อมูลติดต่อ
+
+### เปิดใช้ครั้งแรก
+
+1. **ปิดการสมัครสมาชิกสาธารณะ** — Supabase Dashboard → Authentication → Sign In / Providers →
+   ปิด *Allow new users to sign up*
+2. เพิ่มอีเมลทีมงานลง allowlist ก่อน (เป็นด่านที่สอง เผื่อข้อ 1 ถูกเปิดกลับโดยไม่ตั้งใจ):
+   ```sql
+   insert into public.staff_allowlist (email, note)
+   values ('someone@clinic.com', 'ชื่อ-หน้าที่');
+   ```
+3. Dashboard → Authentication → Users → **Add user** ด้วยอีเมลเดียวกัน
+4. เข้า `/admin/login`
+
+อีเมลที่ไม่อยู่ใน `staff_allowlist` จะ login ผ่านแต่ไม่ได้ profile → เข้าหลังบ้านไม่ได้
+และ RLS ปฏิเสธทุกการเขียน (ทดสอบไว้แล้วใน migration 0005/0007)
+
+ทีมงานทุกคนมีสิทธิ์เท่ากัน ไม่มีระบบแยก role — เหมาะกับทีม 2–5 คนที่ทำงานด้วยกัน
+
+### เนื้อหาอยู่ที่ไหน
+
+| ข้อมูล | ตาราง | เมนูหลังบ้าน |
+|---|---|---|
+| บทความ | `articles` + `article_translations` | บทความ |
+| รูปทั้งหมด | Storage `media` + `media_assets` | คลังรูปภาพ |
+| รีวิวลูกค้า | `reviews` | รีวิวลูกค้า |
+| เคส before/after | `cases` | เคส Before/After |
+| แกลเลอรีผลงาน | `gallery_items` + `gallery_categories` | แกลเลอรีผลงาน |
+| ทีมทันตแพทย์ | `doctors` | ทีมทันตแพทย์ |
+| สาขา | `branches` | สาขา |
+| บริการ / ขั้นตอน / จุดเด่น | `services`, `service_steps`, `service_perks` | บริการ |
+| เบอร์ · LINE · ที่อยู่ · เวลาทำการ | `site_settings` | ตั้งค่าเว็บไซต์ |
+
+`src/content/*.ts` **ยังอยู่ แต่กลายเป็น fallback** — ใช้เมื่อ Supabase ล่มหรือยังไม่ได้ตั้ง env
+เว็บจึงยังรันได้บนเครื่องเปล่า ไม่ได้เป็นแหล่งข้อมูลจริงอีกต่อไป
+
+สิ่งเดียวที่ยังต้องแก้ในโค้ด: **ไอคอน SVG** (`src/content/icons.ts`) — หลังบ้านให้เลือกจาก dropdown
+ที่ลงทะเบียนไว้ เพราะช่องกรอกที่ต้องพิมพ์ `M19 14c1.49-1.46…` ไม่ใช่ของที่ใครใช้งานได้จริง
+
+### รูปอัปเดตหน้าเว็บทันที
+
+ทุกหน้าเป็น ISR (`revalidate = 3600`) และหลังบ้านจะสั่ง `revalidatePath()` ทุกครั้งที่บันทึก
+แก้แล้วเห็นผลทันที ส่วนตัวจับเวลา 1 ชั่วโมงเป็นตาข่ายรองรับกรณีที่ลืมสั่ง
+
 ## โครงสร้าง
 
 ```
 src/
-  app/                 # 6 หน้า (ทุกหน้าเป็น client component เพราะมี state ภาษา/ฟิลเตอร์)
+  app/
+    (หน้าเว็บ)         # page.tsx = server component ดึงข้อมูล, *View.tsx = client component วาด UI
+    admin/             # หลังบ้าน — layout, login, และหนึ่งโฟลเดอร์ต่อหนึ่งชนิดเนื้อหา
   components/          # SiteNav, SiteFooter, Icon, PageStyles
-  content/             # เนื้อหา TH/EN ทั้งหมด — แก้ข้อความ/หมอ/สาขา/บทความ ที่นี่ที่เดียว
-    gallery.generated.ts   # ← generate อัตโนมัติ อย่าแก้มือ
-  lib/                 # lang (TH/EN), reveal (scroll animation), beforeAfter (slider), media (URL)
+    admin/             # ฟิลด์ที่ใช้ซ้ำ: PairField (TH/EN), MediaField, ColorField, IconField…
+  content/             # ค่า fallback + ไอคอน SVG (ไม่ใช่แหล่งข้อมูลจริงแล้ว)
+  lib/
+    site-content.ts    # อ่านเนื้อหาจาก DB สำหรับหน้าเว็บ (fallback ไป src/content เสมอ)
+    site-data.tsx      # context ส่งข้อมูลติดต่อ + สาขา ให้ nav/footer ทุกหน้า
+    supabase/          # client ฝั่ง server (session ทีมงาน) และฝั่ง browser (เฉพาะหน้า login)
+    admin/             # helper ของหลังบ้าน: crud, form parsing, revalidate
 scripts/
   prepare-media.mjs    # บีบอัดรูป + ดึง hero cover ที่ฝัง base64 มาจาก .image-slots.state.json
   upload-media.mjs     # อัปโหลดขึ้น Supabase
+  seed-content.mjs     # ย้ายเนื้อหาจาก src/content/*.ts ลง DB (รันครั้งเดียว ข้ามตารางที่มีข้อมูลแล้ว)
 supabase/migrations/   # SQL
 ```
-
-### แก้เนื้อหา
-
-ข้อความ ชื่อหมอ ข้อมูลสาขา บทความ ราคา — อยู่ใน `src/content/*.ts` ทั้งหมด
-ทุกอย่างเป็นคู่ `{ th, en }` เช่น:
-
-```ts
-name: { th: 'สาขาบางกะปิ', en: 'Bang Kapi' },
-```
-
-> **หมายเหตุ:** ตอนนี้ Supabase เก็บ *เฉพาะรูป* ส่วนเนื้อหาอยู่ในโค้ด
-> ถ้าอนาคตจะย้ายบทความไปเก็บใน DB ด้วย ให้เพิ่มตาราง `articles` แล้วเปลี่ยนแค่
-> `src/content/articles.ts` ให้ไปดึงจาก Supabase — หน้าเว็บไม่ต้องแก้
 
 ### เพิ่ม/เปลี่ยนรูป
 
@@ -92,6 +133,9 @@ name: { th: 'สาขาบางกะปิ', en: 'Bang Kapi' },
 
 Deploy บน Vercel ได้เลย — ตั้ง env 3 ตัว (`NEXT_PUBLIC_SUPABASE_URL`,
 `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SUPABASE_MEDIA_BUCKET`) ใน Project Settings
-`SUPABASE_SERVICE_ROLE_KEY` ไม่ต้องใส่บน Vercel (ใช้เฉพาะตอนอัปโหลดรูปจากเครื่อง)
+
+`SUPABASE_SERVICE_ROLE_KEY` **ไม่ต้องใส่บน Vercel** — ใช้เฉพาะสคริปต์ที่รันจากเครื่อง dev
+หลังบ้านเขียนข้อมูลด้วย session ของคนที่ล็อกอินอยู่ ไม่ใช่ service role ดังนั้นถึงโค้ดฝั่ง server
+จะมีบั๊ก ก็ทำได้ไม่เกินสิทธิ์ของคนที่กดปุ่มนั้น
 
 เมื่อรูปอยู่บน Supabase แล้ว `public/media` ไม่ถูกใช้ (และ `.gitignore` ไว้แล้ว)

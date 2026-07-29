@@ -16,6 +16,11 @@ next-env.d.ts
 # uploaded to Supabase, so it is kept out of the repo. Keep a local/Drive copy —
 # it is the only input `npm run media:prepare` needs if media ever has to be rebuilt.
 /Website creation request/
+
+# Content drops from the clinic, same reasoning: they are an input to the port,
+# not part of the site. Git stores binaries whole on every change, so a 13 MB zip
+# is 13 MB in every future clone — permanently, even after it is deleted.
+*.zip
 .vercel
 .env*
 !.env.example

@@ -1,3 +1,12 @@
+/**
+ * FALLBACK ONLY — no longer the source of truth.
+ *
+ * This content lives in the database now and is edited at /admin. `lib/site-content.ts`
+ * returns these literals only when Supabase is unreachable or the env keys are missing,
+ * so a fresh clone still renders a complete site and a database blip degrades to
+ * slightly stale content instead of a blank page. Editing here changes nothing on a
+ * configured deployment.
+ */
 import type { Localized } from '@/lib/lang';
 import { p, type IconShape } from '@/components/Icon';
 
